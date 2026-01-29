@@ -1,23 +1,39 @@
+
 substitutions:
-  _TAG: dev
+  _SERVICE: trm-eth-balance-api
+  _REGION: us-central1
+  _IMAGE: gcr.io/$PROJECT_ID/trm-eth-balance-api
+  _TAG: latest
 
 steps:
+  # Build image
   - name: gcr.io/cloud-builders/docker
-    args: ["build", "-t", "gcr.io/${PROJECT_ID}/trm-eth-balance-api:${_TAG}", "."]
+    args:
+      - build
+      - "-t"
+      - "${_IMAGE}:${_TAG}"
+      - "."
 
+  # Push image
   - name: gcr.io/cloud-builders/docker
-    args: ["push", "gcr.io/${PROJECT_ID}/trm-eth-balance-api:${_TAG}"]
+    args:
+      - push
+      - "${_IMAGE}:${_TAG}"
 
+  # Deploy to Cloud Run
   - name: gcr.io/google.com/cloudsdktool/cloud-sdk
     entrypoint: gcloud
     args:
       [
-        "run","deploy","trm-eth-balance-api",
-        "--image","gcr.io/${PROJECT_ID}/trm-eth-balance-api:${_TAG}",
-        "--region","us-central1",
+        "run","deploy","${_SERVICE}",
+        "--image","${_IMAGE}:${_TAG}",
+        "--region","${_REGION}",
         "--platform","managed",
-        "--allow-unauthenticated"
+        "--allow-unauthenticated",
+        "--set-secrets","INFURA_API_KEY=infura-api-key:latest"
       ]
 
 images:
-  - "gcr.io/${PROJECT_ID}/trm-eth-balance-api:${_TAG}"
+  - "${_IMAGE}:${_TAG}"
+
+
