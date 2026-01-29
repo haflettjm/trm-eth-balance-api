@@ -23,7 +23,7 @@ steps:
     args:
       [
         "run","deploy","${_SERVICE}",
-        "--image","gcr.io/$PROJECT_ID/trm-eth-balance-api:latest"
+        "--image","gcr.io/$PROJECT_ID/trm-eth-balance-api:latest",
         "--region","${_REGION}",
         "--platform","managed",
         "--allow-unauthenticated",
