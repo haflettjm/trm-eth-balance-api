@@ -2,8 +2,6 @@
 substitutions:
   _SERVICE: trm-eth-balance-api
   _REGION: us-central1
-  _IMAGE: gcr.io/$PROJECT_ID/trm-eth-balance-api
-  _TAG: latest
 
 steps:
   # Build image
@@ -11,14 +9,14 @@ steps:
     args:
       - build
       - "-t"
-      - "${_IMAGE}:${_TAG}"
+      - "gcr.io/$PROJECT_ID/trm-eth-balance-api:latest"
       - "."
 
   # Push image
   - name: gcr.io/cloud-builders/docker
     args:
       - push
-      - "${_IMAGE}:${_TAG}"
+      - "gcr.io/$PROJECT_ID/trm-eth-balance-api:latest"
 
   # Deploy to Cloud Run
   - name: gcr.io/google.com/cloudsdktool/cloud-sdk
