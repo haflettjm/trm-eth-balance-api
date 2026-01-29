@@ -1,0 +1,23 @@
+substitutions:
+  _TAG: dev
+
+steps:
+  - name: gcr.io/cloud-builders/docker
+    args: ["build", "-t", "gcr.io/${PROJECT_ID}/trm-eth-balance-api:${_TAG}", "."]
+
+  - name: gcr.io/cloud-builders/docker
+    args: ["push", "gcr.io/${PROJECT_ID}/trm-eth-balance-api:${_TAG}"]
+
+  - name: gcr.io/google.com/cloudsdktool/cloud-sdk
+    entrypoint: gcloud
+    args:
+      [
+        "run","deploy","trm-eth-balance-api",
+        "--image","gcr.io/${PROJECT_ID}/trm-eth-balance-api:${_TAG}",
+        "--region","us-central1",
+        "--platform","managed",
+        "--allow-unauthenticated"
+      ]
+
+images:
+  - "gcr.io/${PROJECT_ID}/trm-eth-balance-api:${_TAG}"
