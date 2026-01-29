@@ -43,6 +43,5 @@ jobs:
 
       - name: Submit Cloud Build (build+push+deploy)
         run: |
-          TAG=$(git rev-parse --short HEAD)
-          gcloud builds submit --config cloudbuild.yaml --substitutions=_TAG=$TAG .
+          gcloud builds submit --config cloudbuild.yaml
 
