@@ -43,5 +43,5 @@ jobs:
 
       - name: Submit Cloud Build (build+push+deploy)
         run: |
-          gcloud builds submit --config cloudbuild.yaml
+          gcloud builds submit --config cloudbuild.yaml --async --suppress-logs
 

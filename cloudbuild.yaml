@@ -3,6 +3,20 @@ substitutions:
   _REGION: us-central1
 
 steps:
+  # Create Artifact Registry repo if it doesn't exist
+  - name: gcr.io/google.com/cloudsdktool/cloud-sdk
+    entrypoint: bash
+    args:
+      - "-c"
+      - |
+        gcloud artifacts repositories describe ${_SERVICE} \
+          --location=${_REGION} \
+          --project=$PROJECT_ID 2>/dev/null || \
+        gcloud artifacts repositories create ${_SERVICE} \
+          --repository-format=docker \
+          --location=${_REGION} \
+          --project=$PROJECT_ID
+
   # Build image
   - name: gcr.io/cloud-builders/docker
     args:
